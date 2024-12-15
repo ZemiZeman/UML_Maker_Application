@@ -58,7 +58,10 @@
             label1 = new Label();
             tableLayoutPanelCelýForm = new TableLayoutPanel();
             panelPlochaProCanvas = new Panel();
-            button1 = new Button();
+            tableLayoutPanelServiceButtons = new TableLayoutPanel();
+            buttonAddClass = new Button();
+            buttonSavePNG = new Button();
+            saveFileDialog = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panelEditClass.SuspendLayout();
             tableLayoutPanelClassEdit.SuspendLayout();
@@ -72,6 +75,7 @@
             panelAccessModifier.SuspendLayout();
             tableLayoutPanelCelýForm.SuspendLayout();
             panelPlochaProCanvas.SuspendLayout();
+            tableLayoutPanelServiceButtons.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox
@@ -80,10 +84,11 @@
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Location = new Point(0, 0);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1030, 544);
+            pictureBox.Size = new Size(1140, 500);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             pictureBox.Paint += pictureBox_Paint;
+            pictureBox.MouseDoubleClick += pictureBox_MouseDoubleClick;
             pictureBox.MouseDown += pictureBox_MouseDown;
             pictureBox.MouseMove += pictureBox_MouseMove;
             pictureBox.MouseUp += pictureBox_MouseUp;
@@ -93,10 +98,10 @@
             panelEditClass.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panelEditClass.BackColor = Color.LightGray;
             panelEditClass.Controls.Add(tableLayoutPanelClassEdit);
-            panelEditClass.Location = new Point(787, 0);
+            panelEditClass.Location = new Point(897, 0);
             panelEditClass.Margin = new Padding(3, 3, 3, 0);
             panelEditClass.Name = "panelEditClass";
-            panelEditClass.Size = new Size(246, 544);
+            panelEditClass.Size = new Size(246, 500);
             panelEditClass.TabIndex = 1;
             // 
             // tableLayoutPanelClassEdit
@@ -113,7 +118,7 @@
             tableLayoutPanelClassEdit.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanelClassEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelClassEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanelClassEdit.Size = new Size(246, 544);
+            tableLayoutPanelClassEdit.Size = new Size(246, 500);
             tableLayoutPanelClassEdit.TabIndex = 0;
             // 
             // tableLayoutPanelDeleteConfirmButtons
@@ -124,7 +129,7 @@
             tableLayoutPanelDeleteConfirmButtons.Controls.Add(buttonDeleteClass, 0, 0);
             tableLayoutPanelDeleteConfirmButtons.Controls.Add(buttonConfirmClass, 1, 0);
             tableLayoutPanelDeleteConfirmButtons.Dock = DockStyle.Fill;
-            tableLayoutPanelDeleteConfirmButtons.Location = new Point(3, 507);
+            tableLayoutPanelDeleteConfirmButtons.Location = new Point(3, 463);
             tableLayoutPanelDeleteConfirmButtons.Margin = new Padding(3, 3, 3, 0);
             tableLayoutPanelDeleteConfirmButtons.Name = "tableLayoutPanelDeleteConfirmButtons";
             tableLayoutPanelDeleteConfirmButtons.RowCount = 1;
@@ -135,24 +140,26 @@
             // buttonDeleteClass
             // 
             buttonDeleteClass.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            buttonDeleteClass.Location = new Point(0, 14);
-            buttonDeleteClass.Margin = new Padding(0);
+            buttonDeleteClass.Location = new Point(0, 9);
+            buttonDeleteClass.Margin = new Padding(0, 0, 0, 5);
             buttonDeleteClass.Name = "buttonDeleteClass";
             buttonDeleteClass.Size = new Size(120, 23);
             buttonDeleteClass.TabIndex = 0;
             buttonDeleteClass.Text = "Delete";
             buttonDeleteClass.UseVisualStyleBackColor = true;
+            buttonDeleteClass.Click += buttonDeleteClass_Click;
             // 
             // buttonConfirmClass
             // 
             buttonConfirmClass.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            buttonConfirmClass.Location = new Point(120, 14);
-            buttonConfirmClass.Margin = new Padding(0);
+            buttonConfirmClass.Location = new Point(120, 9);
+            buttonConfirmClass.Margin = new Padding(0, 0, 0, 5);
             buttonConfirmClass.Name = "buttonConfirmClass";
             buttonConfirmClass.Size = new Size(120, 23);
             buttonConfirmClass.TabIndex = 1;
             buttonConfirmClass.Text = "Confirm";
             buttonConfirmClass.UseVisualStyleBackColor = true;
+            buttonConfirmClass.Click += buttonConfirmClass_Click;
             // 
             // tableLayoutPanelChooseWhatToEdit
             // 
@@ -281,6 +288,7 @@
             buttonNewMethod.Text = "New";
             buttonNewMethod.TextAlign = ContentAlignment.MiddleLeft;
             buttonNewMethod.UseVisualStyleBackColor = true;
+            buttonNewMethod.Click += buttonNewMethod_Click;
             // 
             // comboBoxMethod
             // 
@@ -289,6 +297,7 @@
             comboBoxMethod.Name = "comboBoxMethod";
             comboBoxMethod.Size = new Size(113, 23);
             comboBoxMethod.TabIndex = 1;
+            comboBoxMethod.TextChanged += comboBoxMethod_TextChanged;
             // 
             // labelMethod
             // 
@@ -330,6 +339,7 @@
             buttonNewProperty.Text = "New";
             buttonNewProperty.TextAlign = ContentAlignment.MiddleLeft;
             buttonNewProperty.UseVisualStyleBackColor = true;
+            buttonNewProperty.Click += buttonNewProperty_Click;
             // 
             // comboBoxProperties
             // 
@@ -338,6 +348,7 @@
             comboBoxProperties.Name = "comboBoxProperties";
             comboBoxProperties.Size = new Size(113, 23);
             comboBoxProperties.TabIndex = 1;
+            comboBoxProperties.TextChanged += comboBoxProperties_TextChanged;
             // 
             // labelProperties
             // 
@@ -382,15 +393,15 @@
             tableLayoutPanelCelýForm.ColumnCount = 1;
             tableLayoutPanelCelýForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanelCelýForm.Controls.Add(panelPlochaProCanvas, 0, 1);
-            tableLayoutPanelCelýForm.Controls.Add(button1, 0, 0);
+            tableLayoutPanelCelýForm.Controls.Add(tableLayoutPanelServiceButtons, 0, 0);
             tableLayoutPanelCelýForm.Dock = DockStyle.Fill;
             tableLayoutPanelCelýForm.Location = new Point(0, 10);
             tableLayoutPanelCelýForm.Name = "tableLayoutPanelCelýForm";
-            tableLayoutPanelCelýForm.RowCount = 3;
+            tableLayoutPanelCelýForm.RowCount = 2;
             tableLayoutPanelCelýForm.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelCelýForm.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanelCelýForm.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayoutPanelCelýForm.Size = new Size(1036, 630);
+            tableLayoutPanelCelýForm.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanelCelýForm.Size = new Size(1146, 546);
             tableLayoutPanelCelýForm.TabIndex = 2;
             // 
             // panelPlochaProCanvas
@@ -401,25 +412,57 @@
             panelPlochaProCanvas.Dock = DockStyle.Fill;
             panelPlochaProCanvas.Location = new Point(3, 43);
             panelPlochaProCanvas.Name = "panelPlochaProCanvas";
-            panelPlochaProCanvas.Size = new Size(1030, 544);
+            panelPlochaProCanvas.Size = new Size(1140, 500);
             panelPlochaProCanvas.TabIndex = 2;
             // 
-            // button1
+            // tableLayoutPanelServiceButtons
             // 
-            button1.Anchor = AnchorStyles.None;
-            button1.Location = new Point(480, 8);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 3;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            tableLayoutPanelServiceButtons.ColumnCount = 4;
+            tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelServiceButtons.Controls.Add(buttonAddClass, 1, 0);
+            tableLayoutPanelServiceButtons.Controls.Add(buttonSavePNG, 2, 0);
+            tableLayoutPanelServiceButtons.Dock = DockStyle.Fill;
+            tableLayoutPanelServiceButtons.Location = new Point(3, 3);
+            tableLayoutPanelServiceButtons.Name = "tableLayoutPanelServiceButtons";
+            tableLayoutPanelServiceButtons.RowCount = 1;
+            tableLayoutPanelServiceButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelServiceButtons.Size = new Size(1140, 34);
+            tableLayoutPanelServiceButtons.TabIndex = 3;
+            // 
+            // buttonAddClass
+            // 
+            buttonAddClass.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            buttonAddClass.Location = new Point(473, 5);
+            buttonAddClass.Name = "buttonAddClass";
+            buttonAddClass.Size = new Size(94, 23);
+            buttonAddClass.TabIndex = 0;
+            buttonAddClass.Text = "Add Class";
+            buttonAddClass.UseVisualStyleBackColor = true;
+            buttonAddClass.Click += buttonAddClass_Click;
+            // 
+            // buttonSavePNG
+            // 
+            buttonSavePNG.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            buttonSavePNG.Location = new Point(573, 5);
+            buttonSavePNG.Name = "buttonSavePNG";
+            buttonSavePNG.Size = new Size(94, 23);
+            buttonSavePNG.TabIndex = 1;
+            buttonSavePNG.Text = "Save as PNG";
+            buttonSavePNG.UseVisualStyleBackColor = true;
+            buttonSavePNG.Click += buttonSavePNG_Click;
+            // 
+            // saveFileDialog
+            // 
+            saveFileDialog.Filter = "|*.png";
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1036, 650);
+            ClientSize = new Size(1146, 566);
             Controls.Add(tableLayoutPanelCelýForm);
             Name = "FormMain";
             Padding = new Padding(0, 10, 0, 10);
@@ -444,6 +487,7 @@
             panelAccessModifier.PerformLayout();
             tableLayoutPanelCelýForm.ResumeLayout(false);
             panelPlochaProCanvas.ResumeLayout(false);
+            tableLayoutPanelServiceButtons.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -479,6 +523,9 @@
         private Panel panelParametrs;
         private TextBox textBoxParametrs;
         private Label labelParametrs;
-        private Button button1;
+        private TableLayoutPanel tableLayoutPanelServiceButtons;
+        private Button buttonAddClass;
+        private Button buttonSavePNG;
+        private SaveFileDialog saveFileDialog;
     }
 }

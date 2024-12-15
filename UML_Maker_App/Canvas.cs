@@ -1,4 +1,7 @@
-﻿namespace DragAndDrop
+﻿using UML_Maker_App;
+using UML_Maker_App.Selections;
+
+namespace DragAndDrop
 {
     public class Canvas
     {
@@ -10,11 +13,31 @@
             _boxes = new List<Box>();
             _selection = null;
 
-            for(int i = 0; i < 5; i++)
-            {
-                Box box = new Box(10, (i * 100) + 10);
-                _boxes.Add(box);
-            }
+            //for(int i = 0; i < 5; i++)
+            //{
+            //    Box box = new Box(10, (i * 100) + 10,(i+1).ToString());
+            //    _boxes.Add(box);
+            //}
+
+            ClassProperty property1 = new ClassProperty(AccessModifer.Public, "int", "studentNumber");
+            ClassProperty property2 = new ClassProperty(AccessModifer.Public, "int", "averageMark");
+
+            ClassMethod method = new ClassMethod(AccessModifer.Public, "bool", "isEligibleToEnroll", new List<string> { "string" });
+            ClassMethod method2 = new ClassMethod(AccessModifer.Public, "int", "getSeminarsTaken", new List<string> ());
+
+            Class @class = new Class(new List<ClassProperty> { property1, property2 }, new List<ClassMethod> { method, method2 }, "Student");
+
+            _boxes.Add(new Box(10, 10, @class));
+
+            ClassProperty property3 = new ClassProperty(AccessModifer.Public, "int", "countOfTeacher");
+            ClassProperty property4 = new ClassProperty(AccessModifer.Private, "int", "budget");
+
+            ClassMethod method3 = new ClassMethod(AccessModifer.Public, "bool", "isOpen", new List<string> { "" });
+            ClassMethod method4 = new ClassMethod(AccessModifer.Public, "void", "FireTeacher", new List<string>());
+
+            Class @class2 = new Class(new List<ClassProperty> { property3, property4 }, new List<ClassMethod>{ method3, method4}, "School");
+
+            _boxes.Add(new Box(250, 10,@class2));
         }
 
         public void Draw(Graphics g)
@@ -45,6 +68,8 @@
                 }
             }
         }
+
+        
         public void Unselect()
         {
             if (_selection == null)
@@ -60,6 +85,38 @@
                 return;
 
             _selection.Move(x, y);
+        }
+
+        public Box DoubleSelect(int x, int y, Panel panel)
+        {
+            Unselect();
+            for (int i = 0; i < _boxes.Count; i++)
+            {
+                Box box = _boxes[i];
+                if (box.IsInCollision(x, y))
+                {
+                    return box;
+                }
+            }
+            return null;
+        }
+
+        public void DeleteBox(Box box)
+        {
+            _boxes.Remove(box);
+        }
+
+        public Box AddBox(Class @class)
+        {
+            int row = _boxes.Count / 4;
+            int help = 0;
+            if (row == 0)
+                help++;
+            int x = _boxes.Count % 4;
+
+            Box box = new Box(x * 250 + 10, row*150+10,@class);
+            _boxes.Add(box);
+            return box;
         }
     }
 }

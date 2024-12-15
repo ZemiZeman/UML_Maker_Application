@@ -1,10 +1,14 @@
-﻿namespace DragAndDrop
+﻿using DragAndDrop;
+
+namespace UML_Maker_App.Selections
 {
     public class ResizeSelection : Selection
     {
-        public ResizeSelection(Box box, int x, int y) 
+        public ResizeSelection(Box box, int x, int y)
             : base(box, x, y)
         { }
+
+
 
         public override void Move(int x, int y)
         {

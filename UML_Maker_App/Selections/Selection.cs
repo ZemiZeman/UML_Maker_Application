@@ -1,4 +1,6 @@
-﻿namespace DragAndDrop
+﻿using DragAndDrop;
+
+namespace UML_Maker_App.Selections
 {
     public abstract class Selection
     {
@@ -24,5 +26,6 @@
         }
 
         public abstract void Move(int x, int y);
+
     }
 }
