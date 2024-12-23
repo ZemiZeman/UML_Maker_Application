@@ -9,17 +9,20 @@ namespace UML_Maker_App
 
         public Box FirstClass { get; set; }
         public Box SecondClass { get; set; }
-        public MultiplicityType Multiplicity { get; set; }
+        public MultiplicityType? MultiplicityForInitialClass { get; set; }
+        public MultiplicityType? MultiplicityForSecondClass { get; set; }
 
         public PointF StartPoint { get; set; }
         public PointF EndPoint { get; set; }
 
-        public Relation(string propertyName, Box firstClass, Box secondClass, MultiplicityType multiplicity)
+        public Relation(string propertyName, Box firstClass, Box secondClass, MultiplicityType multiplicityForInitialClass, MultiplicityType? multiplicityForSecondClass)
         {
             PropertyName = propertyName;
             FirstClass = firstClass;
             SecondClass = secondClass;
-            Multiplicity = multiplicity;
+            MultiplicityForInitialClass = multiplicityForInitialClass;
+            MultiplicityForSecondClass = multiplicityForSecondClass;
+
 
             StartPoint = new Point(0, 0);
             EndPoint = new Point(0, 0);
@@ -48,20 +51,101 @@ namespace UML_Maker_App
             Pen pen = new Pen(Color.Red, 2);
             g.DrawLine(pen, StartPoint,EndPoint);
             DrawArrow(g, pen);
+            DrawInformations(g);
 
             
         }
 
         private void DrawArrow(Graphics g,Pen pen)
         {
+                       
             g.TranslateTransform(EndPoint.X, EndPoint.Y);
-            double doubleNumber = Math.Tan(30) * 9;
-            float floatUse = float.Parse(doubleNumber.ToString());
-            g.DrawLine(pen, 0, 0,-20,-7);
-            g.DrawLine(pen, 0, 0, -20,7);
+            g.RotateTransform(GetLineAngle());
+
+            
+            g.DrawLine(pen, 0, 0, -20, -10);
+            g.DrawLine(pen, 0, 0, -20, 10);
+
             g.ResetTransform();
             
         }
+
+        private float GetLineAngle()
+        {
+            float angle = (float)Math.Atan2(EndPoint.Y - StartPoint.Y, EndPoint.X - StartPoint.X);
+            float degreeAngle = angle * (float)(180 / Math.PI);
+
+            return degreeAngle;
+        }
+
+        private void DrawInformations(Graphics g)
+        {
+            float angle = GetLineAngle();
+            byte stringOption = 1;
+
+
+            if ((angle >= 149 && angle <= 180) || (angle >= -180 && angle <= -149))
+                stringOption = 1;
+            else if (angle < -30 && angle > -149)
+                stringOption = 2;
+            else if (angle >= -30 && angle <= 30)
+                stringOption = 3;
+            else if(angle > 30 && angle < 149)
+                stringOption = 4;
+                
+
+
+            string multiplicityInfo = MultiplicityForInitialClass == null ? "" : MultiplicityForInitialClass == MultiplicityType.One ? "1" : "*";
+            string propertyInfo = PropertyName;
+            StringFormat style1 = new StringFormat()
+            {
+                Alignment = StringAlignment.Near,
+
+            };
+            StringFormat style2 = new StringFormat()
+            {
+                LineAlignment = StringAlignment.Near,
+
+            };
+            StringFormat style3 = new StringFormat()
+            {
+                Alignment = StringAlignment.Far,
+
+            };
+            StringFormat style4 = new StringFormat()
+            {
+                LineAlignment = StringAlignment.Far,
+
+            };
+
+            Font font = new Font("Arial", 10);
+
+            switch (stringOption)
+            {
+                case 1:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, EndPoint.X + 10, EndPoint.Y + 20,style1);
+                    g.DrawString(propertyInfo, font, Brushes.Red, EndPoint.X + 10, EndPoint.Y - 20 - g.MeasureString(propertyInfo,font).Height,style1);
+                    break;
+                case 2:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, EndPoint.X + 20, EndPoint.Y + 10,style2);
+                    g.DrawString(propertyInfo, font, Brushes.Red, EndPoint.X - 20 - g.MeasureString(propertyInfo,font).Width, EndPoint.Y + 10,style2);
+                    break;
+                case 3:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, EndPoint.X - 10, EndPoint.Y + 20,style3);
+                    g.DrawString(propertyInfo, font, Brushes.Red, EndPoint.X - 10 , EndPoint.Y - 20 - g.MeasureString(propertyInfo, font).Height, style3);
+                    break;
+                case 4:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, EndPoint.X + 20, EndPoint.Y - 10, style4);
+                    g.DrawString(propertyInfo, font, Brushes.Red, EndPoint.X - 20 - g.MeasureString(propertyInfo, font).Width, EndPoint.Y - 10, style4);
+                    break;
+            }
+
+            g.DrawString(angle.ToString(), new Font("Arial", 16), Brushes.Black, 50, 50);
+            g.DrawString(stringOption.ToString(), new Font("Arial", 16), Brushes.Black, 50, 75);
+
+            
+        }
+
 
         public static PointF GetIntersectionPoint(Rectangle box, PointF lineStart, PointF lineEnd)
         {

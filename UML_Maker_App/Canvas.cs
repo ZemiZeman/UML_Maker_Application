@@ -5,7 +5,7 @@ namespace DragAndDrop
 {
     public class Canvas
     {
-        private List<Box> _boxes;
+        public List<Box> _boxes;
         private Selection? _selection;
         private List<Relation> _relations;
 
@@ -49,8 +49,8 @@ namespace DragAndDrop
 
             _boxes.Add(new Box(150, 250,@class3));
 
-            _relations.Add(new Relation("students", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Student")!, MultiplicityType.One));
-            _relations.Add(new Relation("teachers", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Teacher")!, MultiplicityType.N));
+            //_relations.Add(new Relation("students", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Student")!, MultiplicityType.One));
+            //_relations.Add(new Relation("teachers", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Teacher")!, MultiplicityType.N));
         }
 
         public void Draw(Graphics g)
@@ -133,6 +133,11 @@ namespace DragAndDrop
             Box box = new Box(x * 250 + 10, row*150+10,@class);
             _boxes.Add(box);
             return box;
+        }
+
+        public void AddRelation(Relation relation)
+        {
+            _relations.Add(relation);
         }
     }
 }

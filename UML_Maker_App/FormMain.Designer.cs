@@ -56,6 +56,8 @@
             panelAccessModifier = new Panel();
             comboBoxAccessModifier = new ComboBox();
             label1 = new Label();
+            panel1 = new Panel();
+            buttonAddRelation = new Button();
             tableLayoutPanelCelýForm = new TableLayoutPanel();
             panelPlochaProCanvas = new Panel();
             tableLayoutPanelServiceButtons = new TableLayoutPanel();
@@ -73,6 +75,7 @@
             panelMethods.SuspendLayout();
             panelProperties.SuspendLayout();
             panelAccessModifier.SuspendLayout();
+            panel1.SuspendLayout();
             tableLayoutPanelCelýForm.SuspendLayout();
             panelPlochaProCanvas.SuspendLayout();
             tableLayoutPanelServiceButtons.SuspendLayout();
@@ -172,9 +175,10 @@
             tableLayoutPanelChooseWhatToEdit.Controls.Add(textBoxClassName, 0, 0);
             tableLayoutPanelChooseWhatToEdit.Controls.Add(panelProperties, 0, 1);
             tableLayoutPanelChooseWhatToEdit.Controls.Add(panelAccessModifier, 0, 3);
+            tableLayoutPanelChooseWhatToEdit.Controls.Add(panel1, 0, 7);
             tableLayoutPanelChooseWhatToEdit.Location = new Point(3, 3);
             tableLayoutPanelChooseWhatToEdit.Name = "tableLayoutPanelChooseWhatToEdit";
-            tableLayoutPanelChooseWhatToEdit.RowCount = 7;
+            tableLayoutPanelChooseWhatToEdit.RowCount = 8;
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
@@ -182,18 +186,17 @@
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanelChooseWhatToEdit.Size = new Size(240, 301);
+            tableLayoutPanelChooseWhatToEdit.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanelChooseWhatToEdit.Size = new Size(240, 454);
             tableLayoutPanelChooseWhatToEdit.TabIndex = 1;
             // 
             // panelParametrs
             // 
             panelParametrs.Controls.Add(textBoxParametrs);
             panelParametrs.Controls.Add(labelParametrs);
-            panelParametrs.Dock = DockStyle.Fill;
             panelParametrs.Location = new Point(3, 263);
             panelParametrs.Name = "panelParametrs";
-            panelParametrs.Size = new Size(234, 35);
+            panelParametrs.Size = new Size(234, 34);
             panelParametrs.TabIndex = 6;
             // 
             // textBoxParametrs
@@ -388,6 +391,24 @@
             label1.TabIndex = 0;
             label1.Text = "Access Modifier:";
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(buttonAddRelation);
+            panel1.Location = new Point(3, 303);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(231, 148);
+            panel1.TabIndex = 7;
+            // 
+            // buttonAddRelation
+            // 
+            buttonAddRelation.Location = new Point(0, 122);
+            buttonAddRelation.Name = "buttonAddRelation";
+            buttonAddRelation.Size = new Size(228, 23);
+            buttonAddRelation.TabIndex = 0;
+            buttonAddRelation.Text = "Add Relation";
+            buttonAddRelation.UseVisualStyleBackColor = true;
+            buttonAddRelation.Click += buttonAddRelation_Click;
+            // 
             // tableLayoutPanelCelýForm
             // 
             tableLayoutPanelCelýForm.ColumnCount = 1;
@@ -485,6 +506,7 @@
             panelProperties.PerformLayout();
             panelAccessModifier.ResumeLayout(false);
             panelAccessModifier.PerformLayout();
+            panel1.ResumeLayout(false);
             tableLayoutPanelCelýForm.ResumeLayout(false);
             panelPlochaProCanvas.ResumeLayout(false);
             tableLayoutPanelServiceButtons.ResumeLayout(false);
@@ -527,5 +549,7 @@
         private Button buttonAddClass;
         private Button buttonSavePNG;
         private SaveFileDialog saveFileDialog;
+        private Panel panel1;
+        private Button buttonAddRelation;
     }
 }

@@ -413,5 +413,13 @@ namespace DragAndDrop
             }
 
         }
+
+        private void buttonAddRelation_Click(object sender, EventArgs e)
+        {
+            List<Box> boxesForRelation = new List<Box>();
+            _canvas._boxes.ForEach(b=> boxesForRelation.Add(b));
+            AddRelationForm form = new AddRelationForm(_editedBox!,boxesForRelation,_canvas);
+            form.ShowDialog();
+        }
     }
 }
