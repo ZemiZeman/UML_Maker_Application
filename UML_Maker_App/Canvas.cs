@@ -7,11 +7,13 @@ namespace DragAndDrop
     {
         private List<Box> _boxes;
         private Selection? _selection;
+        private List<Relation> _relations;
 
         public Canvas()
         {
             _boxes = new List<Box>();
             _selection = null;
+            _relations = new List<Relation>();
 
             //for(int i = 0; i < 5; i++)
             //{
@@ -38,12 +40,26 @@ namespace DragAndDrop
             Class @class2 = new Class(new List<ClassProperty> { property3, property4 }, new List<ClassMethod>{ method3, method4}, "School");
 
             _boxes.Add(new Box(250, 10,@class2));
+
+            ClassProperty propert5 = new ClassProperty(AccessModifer.Private, "bool", "IsAvaiable");
+
+            ClassMethod method5 = new ClassMethod(AccessModifer.Internal,"","teach",new List<string> {"str","int"});
+
+            Class @class3 = new Class(new List<ClassProperty> { propert5 }, new List<ClassMethod> { method5 }, "Teacher");
+
+            _boxes.Add(new Box(150, 250,@class3));
+
+            _relations.Add(new Relation("students", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Student")!, MultiplicityType.One));
+            _relations.Add(new Relation("teachers", _boxes.SingleOrDefault(b => b.Class.Identificator == "School")!, _boxes.SingleOrDefault(b => b.Class.Identificator == "Teacher")!, MultiplicityType.N));
         }
 
         public void Draw(Graphics g)
         {
             foreach (Box box in _boxes)
                 box.Draw(g);
+
+            foreach(Relation relation in _relations)
+                relation.DrawUML(g);
         }
 
         public void Select(int x, int y)

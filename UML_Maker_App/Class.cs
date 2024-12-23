@@ -24,9 +24,58 @@ namespace UML_Maker_App
             Methods = new List<ClassMethod>();
         }
 
+        public string GetLongestText()
+        {
+            string longestString = Identificator;
+
+            foreach (ClassProperty classProperty in Properties)
+            {
+                if (classProperty.ToString().Length > longestString.Length)
+                    longestString = classProperty.ToString();
+            }
+
+            foreach (ClassMethod classMethod in Methods)
+            {
+                if(classMethod.ToString().Length > longestString.Length)
+                    longestString = classMethod.ToString();
+            }
+
+            return longestString;
+
+        }
+
+
         public void DrawUML(Graphics g, float posX, float posY)
         {
             
+        }
+
+        public float GetMinimalWidth(Graphics g)
+        {
+            Font fontForProperties = new Font("Arial", 10);
+
+            SizeF size = g.MeasureString(GetLongestText(), fontForProperties);
+
+            return float.Parse(size.Width.ToString()) + 5;
+        }
+
+        public float GetMinimalHeight()
+        {
+            float height = 30;
+            height += 30;
+
+            foreach (ClassProperty classProperty in Properties)
+                height += 15;
+
+            height += 15;
+
+            foreach (ClassMethod classMethod in Methods)
+                height += 15;
+
+            height -= 15;
+
+            return height;
+
         }
 
         public void DrawUML(Graphics g,float posX,float posY,float width,float height)
@@ -35,6 +84,10 @@ namespace UML_Maker_App
             Brush brush = Brushes.Black;
             Pen pen = Pens.CadetBlue;
             Brush brushAlice = Brushes.CadetBlue;
+
+            width = GetMinimalWidth(g);
+            height = GetMinimalHeight();
+
 
             g.DrawRectangle(pen, posX, posY, width, height);
             g.FillRectangle(brushAlice, posX, posY, width, 29); //výška fontu(teď 14) + 30/2

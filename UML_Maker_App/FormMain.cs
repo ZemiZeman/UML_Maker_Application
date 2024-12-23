@@ -117,6 +117,7 @@ namespace DragAndDrop
 
         private void LoadProperties()
         {
+            panelProperties.Enabled = true;
             if (_editedBox!.Class!.Properties.Count == 0)
             {
                 comboBoxProperties.Enabled = false;
@@ -136,6 +137,7 @@ namespace DragAndDrop
 
         private void LoadMethods()
         {
+            panelMethods.Enabled = true;
             if (_editedBox!.Class!.Methods.Count == 0)
             {
                 comboBoxMethod.Enabled = false;
@@ -391,7 +393,7 @@ namespace DragAndDrop
                 return;
             }
 
-            SetValues();
+            LoadClassInfos();
         }
 
         private void buttonSavePNG_Click(object sender, EventArgs e)

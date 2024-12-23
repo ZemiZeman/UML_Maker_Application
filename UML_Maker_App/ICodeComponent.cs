@@ -4,7 +4,7 @@
     {
         void WriteCode();
 
-        void DrawUML(Graphics g,float posX,float posY);
+        void DrawUML(Graphics g, float posX, float posY);
 
     }
 }

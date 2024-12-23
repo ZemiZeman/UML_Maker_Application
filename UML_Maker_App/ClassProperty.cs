@@ -1,4 +1,6 @@
-﻿namespace UML_Maker_App
+﻿using DragAndDrop;
+
+namespace UML_Maker_App
 {
     public class ClassProperty : ICodeComponent
     {
@@ -20,6 +22,11 @@
             Identificator = string.Empty;
         }
 
+        public override string ToString()
+        {
+            return $"{AccessModifer.ToSign()}{Identificator}: {DataType}";
+        }
+
         public void WriteCode()
         {
             File.AppendAllText("text.txt", $"{AccessModifer.InCodeFormat()} {DataType} {Identificator}  {{get; set;}} \n");
@@ -32,7 +39,7 @@
 
             string str = $"{AccessModifer.ToSign()}{Identificator}: {DataType}";
 
-            g.DrawString(str, font, brush, posX, posY);
+            g.DrawString(str, font, brush, posX + 5, posY);
         }
 
         public bool IsValid()

@@ -24,6 +24,20 @@ namespace UML_Maker_App
             Parameters = new List<string>();
         }
 
+        public override string ToString()
+        {
+            string parameters = string.Empty;
+            foreach (string parameter in Parameters)
+            {
+                parameters += $"{parameter},";
+            }
+
+            if (Parameters.Count > 0)
+                parameters = parameters.Remove(parameters.Length - 1);
+
+            return $"{AccessModifer.ToSign()}{Identificator}({parameters}): {DataType}";
+        }
+
         public void WriteCode()
         {
             string parameters = string.Empty;
@@ -55,12 +69,13 @@ namespace UML_Maker_App
 
             string str = $"{AccessModifer.ToSign()}{Identificator}({parameters}): {DataType}";
 
-            g.DrawString(str, font, brush, posX, posY);
+            g.DrawString(str, font, brush, posX + 5, posY);
         }
 
         public bool IsValid()
         {
             return DataType != string.Empty && Identificator != string.Empty;
         }
+
     }
 }

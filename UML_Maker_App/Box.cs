@@ -85,6 +85,8 @@ namespace DragAndDrop
             }
             else
             {
+                Width = (int)Class.GetMinimalWidth(g);
+                Height = (int)Class.GetMinimalHeight();
                 Class.DrawUML(g, PositionX, PositionY,Width,Height);
             }
         }
