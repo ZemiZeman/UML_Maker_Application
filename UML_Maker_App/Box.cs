@@ -5,10 +5,10 @@ namespace DragAndDrop
 {
     public class Box
     {
-        public int PositionX { get; private set; }
-		public int PositionY { get; private set; }
-		public int Width { get; private set; }
-		public int Height { get; private set; }
+        public int PositionX { get; set; }
+		public int PositionY { get; set; }
+		public int Width { get; set; }
+		public int Height { get; set; }
 		public Class? ClassInBox { get; set; }
 
 

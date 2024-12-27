@@ -450,7 +450,21 @@ namespace DragAndDrop
             {
                 JSONParser jSONParser = new JSONParser(openFileDialog.FileName);
                 Canvas canvas = jSONParser.ReadJsonFile();
+
+                foreach(Relation relation in canvas._relations)
+                {
+                    if (relation.FirstClass != null)
+                    {
+                        relation.FirstClass = canvas._boxes.First(b=> relation.FirstClass.ClassInBox.Identificator == b.ClassInBox.Identificator);
+                    }
+
+                    if(relation.SecondClass != null)
+                    {
+                        relation.SecondClass = canvas._boxes.First(b => relation.SecondClass.ClassInBox.Identificator == b.ClassInBox.Identificator);
+                    }
+                }
                 _canvas = canvas;
+                pictureBox.Refresh();
             }
         }
 
