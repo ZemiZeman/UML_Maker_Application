@@ -27,9 +27,9 @@ namespace UML_Maker_App
             return $"{AccessModifer.ToSign()}{Identificator}: {DataType}";
         }
 
-        public void WriteCode()
+        public void WriteCode(string path)
         {
-            File.AppendAllText("text.txt", $"{AccessModifer.InCodeFormat()} {DataType} {Identificator}  {{get; set;}} \n");
+            File.AppendAllText(path, $"{AccessModifer.InCodeFormat()} {DataType} {Identificator}  {{get; set;}} \n");
         }
 
         public void DrawUML(Graphics g, float posX, float posY)

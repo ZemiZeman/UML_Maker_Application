@@ -38,7 +38,7 @@ namespace UML_Maker_App
             return $"{AccessModifer.ToSign()}{Identificator}({parameters}): {DataType}";
         }
 
-        public void WriteCode()
+        public void WriteCode(string path)
         {
             string parameters = string.Empty;
             for (int i = 1; i <= Parameters.Count; i++)
@@ -49,7 +49,7 @@ namespace UML_Maker_App
             if(Parameters.Count > 0 )
                 parameters = parameters.Remove(parameters.Length - 1);
 
-            File.AppendAllText("text.txt", $"{AccessModifer.InCodeFormat()} {DataType} {Identificator} ({parameters})\n{{\n\n}}\n");
+            File.AppendAllText(path, $"{AccessModifer.InCodeFormat()} {DataType} {Identificator} ({parameters})\n{{\n\n}}\n");
             
         }
 

@@ -7,28 +7,53 @@ namespace UML_Maker_App
     public class Relation
     {
         public string PropertyName { get; set; }
+        public string? PropertyNameInSecondClass { get; set; }
 
         public Box FirstClass { get; set; } //Classa ve které je odkaz na 2. classu
         public Box SecondClass { get; set; } //Classa na kterou je odkaz
+        public RelationType RelationType { get; set; }
         public MultiplicityType? MultiplicityForInitialClass { get; set; }
         public MultiplicityType? MultiplicityForSecondClass { get; set; } //Pro případ obousměrné asociace
 
         public PointF StartPoint { get; set; } //Bod, kde čára ze středu boxu1, protne hranu boxu
         public PointF EndPoint { get; set; } //Bod, kde čára ze středu boxu2, protne hranu boxu
 
-        public Relation(string propertyName, Box firstClass, Box secondClass, MultiplicityType multiplicityForInitialClass, MultiplicityType? multiplicityForSecondClass)
+        public Relation(string propertyName, Box firstClass, Box secondClass,RelationType relationType, MultiplicityType multiplicityForInitialClass, MultiplicityType? multiplicityForSecondClass = null, string? propertyNameInSecondClass = null)
         {
             PropertyName = propertyName;
             FirstClass = firstClass;
             SecondClass = secondClass;
+            RelationType = relationType;
             MultiplicityForInitialClass = multiplicityForInitialClass;
             MultiplicityForSecondClass = multiplicityForSecondClass;
-
+            PropertyNameInSecondClass = propertyNameInSecondClass;
 
             StartPoint = new Point(0, 0);
             EndPoint = new Point(0, 0);
         }
 
+        public Relation()
+        {
+            PropertyName = string.Empty;
+            FirstClass = new Box();
+            SecondClass = new Box();
+            RelationType = RelationType.Aggregation;
+            MultiplicityForInitialClass = MultiplicityType.One;
+            MultiplicityForSecondClass = MultiplicityType.One;
+            PropertyNameInSecondClass = string.Empty;
+
+            StartPoint = new Point(0, 0);
+            EndPoint = new Point(0, 0);
+
+
+
+        }
+        public bool IsValid()
+        {
+            if (PropertyName == string.Empty)
+                return true;
+            return char.IsLetter(PropertyName[0]);
+        }
         public void DrawUML(Graphics g)
         {
             
@@ -50,21 +75,74 @@ namespace UML_Maker_App
 
 
             Pen pen = new Pen(Color.Red, 2);
-            
-            //PointF[] points = DrawRhombus(g, pen);
 
-            //int option = GetEndPointOfRhumbus();
-            //if (option == 4)
-            //    option = 0;
+            if (RelationType == RelationType.UniDirectional_Association)
+            {
+                DrawUniAssociation(g,pen);
+            }
+            else if (RelationType == RelationType.BiDirectional_Association)
+            {
+                DrawBiAssociation(g,pen);
+            }
+            else if (RelationType == RelationType.Aggregation)
+            {
+                DrawAggregation(g,pen);
+            }
+            else if (RelationType == RelationType.Composition)
+            {
+                DrawComposition(g,pen);
+            }
+            else if (RelationType == RelationType.Inheritance)
+            {
+                DrawInheritance(g,pen);
+            }
+        }
 
-            //g.DrawLine(pen, points[option], EndPoint);
-
+        private void DrawUniAssociation(Graphics g,Pen pen)
+        {
             g.DrawLine(pen, StartPoint, EndPoint);
-            DrawTriangle(g, pen);
+            DrawArrow(g, pen);
+            DrawInformations(g);
+        }
 
+        private void DrawBiAssociation(Graphics g,Pen pen)
+        {
+            g.DrawLine(pen, StartPoint, EndPoint);
+            DrawInformations(g);
+            DrawInformationsForBiAssociation(g);
+
+        }
+
+        private void DrawAggregation(Graphics g, Pen pen)
+        {
+            PointF[] points = DrawRhombus(g, pen);
+
+            int option = GetEndPointOfRhumbus(g);
+            if (option == 4)
+                option = 0;
+
+            g.DrawLine(pen, points[option], EndPoint);
             DrawInformations(g);
 
-            
+        }
+
+        private void DrawComposition(Graphics g, Pen pen)
+        {
+            PointF[] points = FillRhombus(g, pen);
+
+            int option = GetEndPointOfRhumbus(g);
+            if (option == 4)
+                option = 0;
+
+            g.DrawLine(pen, points[option], EndPoint);
+            DrawInformations(g);
+        }
+
+        private void DrawInheritance(Graphics g, Pen pen)
+        {
+            g.DrawLine(pen, StartPoint, EndPoint);
+            DrawTriangle(g, pen);
+            DrawInformations(g);
         }
 
         //Pro asociaci
@@ -85,7 +163,7 @@ namespace UML_Maker_App
         private PointF[] DrawRhombus(Graphics g,Pen pen)
         {
 
-            int options = GetEndPointOfRhumbus();
+            int options = GetEndPointOfRhumbus(g);
             PointF[] points = GetArrayOfRhombusPoints(options);
 
             g.DrawPolygon(pen, points);
@@ -141,28 +219,56 @@ namespace UML_Maker_App
         }
 
         //Zjistí na jakou stranu směřuje pojící čára,aby se podle toho mohl postavit/položit kosočtverec
-        private int GetEndPointOfRhumbus()
+        private int GetEndPointOfRhumbus(Graphics g)
         {
             float angle = GetLineAngle();
             int option = 0;
 
-            if ((angle > -40 && angle <= 0) || (angle >= 0 && angle < 40))
+            //float leftUpperCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX,FirstClass.PositionY), angle);
+            //float rightUpperCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX+FirstClass.Width,FirstClass.PositionY), angle);
+            //float leftLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX,FirstClass.PositionY+FirstClass.Height), angle);
+            //float rightLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX + FirstClass.Width,FirstClass.PositionY + FirstClass.Height),angle);
+            float rightLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX + FirstClass.Width, FirstClass.PositionY + FirstClass.Height), angle);
+            float leftUpperCornerAngle = (180 - rightLowerCornerAngle) * -1;
+            float rightUpperCornerAngle = rightLowerCornerAngle * -1;
+            float leftLowerCornerAngle = leftUpperCornerAngle * -1;
+
+            //if ((angle > -40 && angle <= 0) || (angle >= 0 && angle < 40))
+            //    option = 1;
+            //else if (angle >=40 && angle <= 139)
+            //    option = 2;
+            //else if ((angle > 139 && angle <=180)|| (angle >= -180 && angle < -139))
+            //    option = 3;
+            //else if (angle >= -139 && angle <= -40)
+            //    option = 4;
+
+            if ((angle > rightUpperCornerAngle && angle <= 0) || (angle >= 0 && angle < rightLowerCornerAngle))
                 option = 1;
-            else if (angle >=40 && angle <= 139)
+            else if (angle >= rightLowerCornerAngle && angle <= leftLowerCornerAngle)
                 option = 2;
-            else if ((angle > 139 && angle <=180)|| (angle >= -180 && angle < -139))
+            else if ((angle > leftLowerCornerAngle && angle <= 180) || (angle >= -180 && angle < leftUpperCornerAngle))
                 option = 3;
-            else if (angle >= -139 && angle < -30)
+            else if (angle >= leftUpperCornerAngle && angle <= rightUpperCornerAngle)
                 option = 4;
 
+            g.DrawString(angle.ToString(), new Font("Arial", 16), Brushes.Black, 50, 50);
 
             return option;
+        }
+
+        public float GetCornerAngle(PointF corner, float lineAngle)
+        {
+            double angelCorner = Math.Atan2(StartPoint.Y - corner.Y,StartPoint.X - corner.X);
+            double angelCornerDegrees = angelCorner * (180 / Math.PI);
+
+            float finalAngel = lineAngle - (float)angelCornerDegrees;
+            return finalAngel;
         }
 
         //Pro kompozici
         private PointF[] FillRhombus( Graphics g,Pen pen)
         {
-            int options = GetEndPointOfRhumbus();
+            int options = GetEndPointOfRhumbus(g);
             PointF[] points = GetArrayOfRhombusPoints(options);
 
             g.FillPolygon(Brushes.Red, points);
@@ -198,6 +304,8 @@ namespace UML_Maker_App
 
             return degreeAngle;
         }
+
+
 
         //Vypíše multiplicitu a název metody, pod kterou je nastavený odkaz na jinou Classu
         private void DrawInformations(Graphics g)
@@ -259,6 +367,69 @@ namespace UML_Maker_App
                 case 4:
                     g.DrawString(multiplicityInfo, font, Brushes.Red, EndPoint.X + 20, EndPoint.Y - 10, style4);
                     g.DrawString(propertyInfo, font, Brushes.Red, EndPoint.X - 20 - g.MeasureString(propertyInfo, font).Width, EndPoint.Y - 10, style4);
+                    break;
+            }
+        }
+
+        private void DrawInformationsForBiAssociation(Graphics g)
+        {
+            float angle = GetLineAngle();
+            byte stringOption = 1;
+
+
+            if ((angle > -40 && angle <= 0) || (angle >= 0 && angle < 40))
+                stringOption = 1;
+            else if (angle >= 40 && angle <= 139)
+                stringOption = 2;
+            else if ((angle > 139 && angle <= 180) || (angle >= -180 && angle < -139))
+                stringOption = 3;
+            else if (angle >= -139 && angle < -30)
+                stringOption = 4;
+
+
+
+            string multiplicityInfo = MultiplicityForSecondClass == null ? "" : MultiplicityForSecondClass == MultiplicityType.One ? "1" : "*";
+            string propertyInfo = PropertyNameInSecondClass;
+            StringFormat style1 = new StringFormat()
+            {
+                Alignment = StringAlignment.Near,
+
+            };
+            StringFormat style2 = new StringFormat()
+            {
+                LineAlignment = StringAlignment.Near,
+
+            };
+            StringFormat style3 = new StringFormat()
+            {
+                Alignment = StringAlignment.Far,
+
+            };
+            StringFormat style4 = new StringFormat()
+            {
+                LineAlignment = StringAlignment.Far,
+
+            };
+
+            Font font = new Font("Arial", 10);
+
+            switch (stringOption)
+            {
+                case 1:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, StartPoint.X + 10, StartPoint.Y + 20, style1);
+                    g.DrawString(propertyInfo, font, Brushes.Red, StartPoint.X + 10, StartPoint.Y - 20 - g.MeasureString(propertyInfo, font).Height, style1);
+                    break;
+                case 2:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, StartPoint.X + 20, StartPoint.Y + 10, style2);
+                    g.DrawString(propertyInfo, font, Brushes.Red, StartPoint.X - 20 - g.MeasureString(propertyInfo, font).Width, StartPoint.Y + 10, style2);
+                    break;
+                case 3:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, StartPoint.X - 10, StartPoint.Y + 20, style3);
+                    g.DrawString(propertyInfo, font, Brushes.Red, StartPoint.X - 10, StartPoint.Y - 20 - g.MeasureString(propertyInfo, font).Height, style3);
+                    break;
+                case 4:
+                    g.DrawString(multiplicityInfo, font, Brushes.Red, StartPoint.X + 20, StartPoint.Y - 10, style4);
+                    g.DrawString(propertyInfo, font, Brushes.Red, StartPoint.X - 20 - g.MeasureString(propertyInfo, font).Width, StartPoint.Y - 10, style4);
                     break;
             }
         }

@@ -42,7 +42,7 @@ namespace DragAndDrop
         private void SetValues()
         {
 
-            if (textBoxClassName.Text == _editedBox!.Class!.Identificator)
+            if (textBoxClassName.Text == _editedBox!.ClassInBox!.Identificator)
             {
                 panelEditClass.Visible = false;
                 textBoxClassName.Text = string.Empty;
@@ -50,7 +50,7 @@ namespace DragAndDrop
             }
 
             panelEditClass.Visible = true;
-            textBoxClassName.Text = _editedBox!.Class!.Identificator;
+            textBoxClassName.Text = _editedBox!.ClassInBox!.Identificator;
 
             LoadClassInfos();
 
@@ -99,7 +99,7 @@ namespace DragAndDrop
 
             Class @class = new Class(new List<ClassProperty> { property1, property2 }, new List<ClassMethod> { method, method2 }, "Student");
 
-            @class.WriteCode();
+            
         }
 
         private void LoadComboBoxes()
@@ -118,7 +118,7 @@ namespace DragAndDrop
         private void LoadProperties()
         {
             panelProperties.Enabled = true;
-            if (_editedBox!.Class!.Properties.Count == 0)
+            if (_editedBox!.ClassInBox!.Properties.Count == 0)
             {
                 comboBoxProperties.Enabled = false;
                 return;
@@ -127,7 +127,7 @@ namespace DragAndDrop
             comboBoxProperties.Enabled = true;
 
             List<string> properties = new List<string> { "Vyberte vlastnost:" };
-            foreach (var item in _editedBox.Class.Properties)
+            foreach (var item in _editedBox.ClassInBox.Properties)
             {
                 properties.Add(item.Identificator);
             }
@@ -138,7 +138,7 @@ namespace DragAndDrop
         private void LoadMethods()
         {
             panelMethods.Enabled = true;
-            if (_editedBox!.Class!.Methods.Count == 0)
+            if (_editedBox!.ClassInBox!.Methods.Count == 0)
             {
                 comboBoxMethod.Enabled = false;
                 return;
@@ -147,7 +147,7 @@ namespace DragAndDrop
             comboBoxMethod.Enabled = true;
 
             List<string> methods = new List<string> { "Vyberte metodu:" };
-            foreach (var item in _editedBox.Class.Methods)
+            foreach (var item in _editedBox.ClassInBox.Methods)
             {
                 methods.Add(item.Identificator);
             }
@@ -165,7 +165,7 @@ namespace DragAndDrop
 
         private void comboBoxProperties_TextChanged(object sender, EventArgs e)
         {
-            ClassProperty? property = _editedBox.Class.Properties.SingleOrDefault(p => p.Identificator == comboBoxProperties.Text);
+            ClassProperty? property = _editedBox.ClassInBox.Properties.SingleOrDefault(p => p.Identificator == comboBoxProperties.Text);
             if (property == null)
             {
                 LoadClassInfos();
@@ -191,7 +191,7 @@ namespace DragAndDrop
 
         private void comboBoxMethod_TextChanged(object sender, EventArgs e)
         {
-            ClassMethod? method = _editedBox!.Class!.Methods.SingleOrDefault(p => p.Identificator == comboBoxMethod.Text);
+            ClassMethod? method = _editedBox!.ClassInBox!.Methods.SingleOrDefault(p => p.Identificator == comboBoxMethod.Text);
             if (method == null)
             {
                 LoadClassInfos();
@@ -252,14 +252,14 @@ namespace DragAndDrop
                         }
                     }
 
-                    _editedBox.Class.Methods[index] = newMethod;
+                    _editedBox.ClassInBox.Methods[index] = newMethod;
                     pictureBox.Refresh();
                     LoadClassInfos();
                     return;
                 }
 
 
-                _editedBox!.Class!.Methods.Add(newMethod);
+                _editedBox!.ClassInBox!.Methods.Add(newMethod);
                 pictureBox.Refresh();
                 LoadClassInfos();
             }
@@ -284,12 +284,12 @@ namespace DragAndDrop
                         }
                     }
 
-                    _editedBox.Class.Properties[index] = newProperty;
+                    _editedBox.ClassInBox.Properties[index] = newProperty;
                     pictureBox.Refresh();
                     LoadClassInfos();
                     return;
                 }
-                _editedBox!.Class!.Properties.Add(newProperty);
+                _editedBox!.ClassInBox!.Properties.Add(newProperty);
                 pictureBox.Refresh();
                 LoadClassInfos();
             }
@@ -297,11 +297,11 @@ namespace DragAndDrop
 
         public void ConfirmClass()
         {
-            Class newClass = new Class(_editedBox.Class.Properties, _editedBox.Class.Methods, textBoxClassName.Text);
+            Class newClass = new Class(_editedBox.ClassInBox.Properties, _editedBox.ClassInBox.Methods, textBoxClassName.Text);
 
             if (newClass.IsValid())
             {
-                _editedBox!.Class = newClass;
+                _editedBox!.ClassInBox = newClass;
                 pictureBox.Refresh();
                 LoadClassInfos();
             }
@@ -332,7 +332,7 @@ namespace DragAndDrop
                 return;
             }
 
-            _editedBox.Class.Methods.RemoveAll(m => m.Identificator == methodName);
+            _editedBox.ClassInBox.Methods.RemoveAll(m => m.Identificator == methodName);
             pictureBox.Refresh();
             LoadClassInfos();
         }
@@ -347,7 +347,7 @@ namespace DragAndDrop
                 return;
             }
 
-            _editedBox.Class.Properties.RemoveAll(m => m.Identificator == propertyName);
+            _editedBox.ClassInBox.Properties.RemoveAll(m => m.Identificator == propertyName);
             pictureBox.Refresh();
             LoadClassInfos();
         }
@@ -417,9 +417,55 @@ namespace DragAndDrop
         private void buttonAddRelation_Click(object sender, EventArgs e)
         {
             List<Box> boxesForRelation = new List<Box>();
-            _canvas._boxes.ForEach(b=> boxesForRelation.Add(b));
-            AddRelationForm form = new AddRelationForm(_editedBox!,boxesForRelation,_canvas);
+            _canvas._boxes.ForEach(b => boxesForRelation.Add(b));
+            AddRelationForm form = new AddRelationForm(_editedBox!, boxesForRelation, _canvas);
             form.ShowDialog();
+        }
+
+        private void tableLayoutPanelServiceButtons_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void buttonSaveJSON_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog.ShowDialog();
+
+
+            if (result == DialogResult.OK)
+            {
+                JSONParser jSONParser = new JSONParser(saveFileDialog.FileName);
+                jSONParser.SaveJson(_canvas);
+
+            }
+
+
+        }
+
+        private void buttonLoadJSON_Click(object sender, EventArgs e)
+        {
+            DialogResult result = openFileDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                JSONParser jSONParser = new JSONParser(openFileDialog.FileName);
+                Canvas canvas = jSONParser.ReadJsonFile();
+                _canvas = canvas;
+            }
+        }
+
+        private void buttonGenerateCode_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog.ShowDialog();
+
+
+            if (result == DialogResult.OK)
+            {
+                foreach(Box box in _canvas._boxes)
+                {
+                    box.ClassInBox.WriteCode(saveFileDialog.FileName, _canvas._relations);
+                }
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface ICodeComponent
     {
-        void WriteCode();
+        void WriteCode(string path);
 
         void DrawUML(Graphics g, float posX, float posY);
 

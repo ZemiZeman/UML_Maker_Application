@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UML_Maker_App
 {
-    public class Class : ICodeComponent
+    public class Class
     {
+
         public List<ClassProperty> Properties { get; set; }
         public List<ClassMethod> Methods { get; set; }
 
@@ -20,6 +21,13 @@ namespace UML_Maker_App
         public Class(string identificator)
         {
             Identificator= identificator;
+            Properties = new List<ClassProperty>();
+            Methods = new List<ClassMethod>();
+        }
+
+        public Class()
+        {
+            Identificator = string.Empty;
             Properties = new List<ClassProperty>();
             Methods = new List<ClassMethod>();
         }
@@ -111,26 +119,90 @@ namespace UML_Maker_App
             }
         }
 
-        public void WriteCode()
+        public void WriteCode(string path, List<Relation> relations)
         {
-            File.AppendAllText("text.txt", $"public class {Identificator}\n{{\n");
-            foreach( var property in Properties )
+            string inherianceClass = "";
+
+            Relation? inheritanceRelation = relations.Where(r => r?.RelationType == RelationType.Inheritance).FirstOrDefault(r => r?.FirstClass?.ClassInBox?.Identificator == this.Identificator);
+           
+            if(inheritanceRelation != null)
             {
-                property.WriteCode();
+                inherianceClass = $" : {inheritanceRelation.SecondClass.ClassInBox.Identificator}";
             }
 
-            File.AppendAllText("text.txt", "\n");
+
+			List<ClassProperty> externalProperties = new List<ClassProperty>();
+
+            LoadExternalProperties(relations, externalProperties);
+            LoadExternalPropertiesFromBiAssociation(relations, externalProperties);
+
+
+			File.AppendAllText(path, $"public class {Identificator}{inherianceClass}\n{{\n");
+            foreach( var property in Properties )
+            {
+                property.WriteCode(path);
+            }
+            foreach( var property in externalProperties )
+            {
+                property.WriteCode(path);
+            }
+
+            File.AppendAllText(path, "\n");
             foreach (var method in Methods)
             {
-                method.WriteCode();
+                method.WriteCode(path);
             }
-            File.AppendAllText("text.txt", $"}}\n");
+            File.AppendAllText(path, $"}}\n\n");
         }
 
         public bool IsValid()
         {
             return Identificator != string.Empty;
         }
+
+        private void LoadExternalProperties(List<Relation> relations, List<ClassProperty> externalProperties)
+        {
+			List<Relation> relationList = relations.Where(r => r?.RelationType != RelationType.Inheritance).Where(r => r?.FirstClass?.ClassInBox?.Identificator == this.Identificator).ToList();
+
+
+			foreach (var item in relationList)
+			{
+				string dataType = "";
+				if (item.MultiplicityForInitialClass == MultiplicityType.One)
+				{
+					dataType = item.SecondClass.ClassInBox.Identificator;
+				}
+				else
+				{
+					dataType = $"List<{item.SecondClass.ClassInBox.Identificator}>";
+				}
+				string propertyName = item.PropertyName;
+
+				ClassProperty classProperty = new ClassProperty(AccessModifer.Public, dataType, propertyName);
+				externalProperties.Add(classProperty);
+			}
+		}
+
+        private void LoadExternalPropertiesFromBiAssociation(List<Relation> relations, List<ClassProperty> externalProperties)
+        {
+			List<Relation> relationList = relations.Where(r => r?.RelationType == RelationType.BiDirectional_Association).Where(r => r?.SecondClass?.ClassInBox?.Identificator == this.Identificator).ToList();
+			foreach (var item in relationList)
+			{
+				string dataType = "";
+				if (item.MultiplicityForSecondClass == MultiplicityType.One)
+				{
+					dataType = item.FirstClass.ClassInBox.Identificator;
+				}
+				else
+				{
+					dataType = $"List<{item.FirstClass.ClassInBox.Identificator}>";
+				}
+				string propertyName = item.PropertyNameInSecondClass;
+
+				ClassProperty classProperty = new ClassProperty(AccessModifer.Public, dataType, propertyName);
+				externalProperties.Add(classProperty);
+			}
+		}
     }
 }
 

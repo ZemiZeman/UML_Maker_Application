@@ -36,15 +36,19 @@
             comboBoxRelationType = new ComboBox();
             label4 = new Label();
             textBoxPropertyName = new TextBox();
-            radioButton1InitialClass = new RadioButton();
-            radioButtonInitialClass = new RadioButton();
-            label5 = new Label();
             button3 = new Button();
             panelForSecondMultiplicity = new Panel();
             radioButtonNOtherClass = new RadioButton();
             radioButton1OtherClass = new RadioButton();
             label6 = new Label();
+            panelForInitialMultiplicity = new Panel();
+            label5 = new Label();
+            radioButtonInitialClass = new RadioButton();
+            radioButton1InitialClass = new RadioButton();
+            textBoxPropertyForSecondClass = new TextBox();
+            labelPropertyForSecondClass = new Label();
             panelForSecondMultiplicity.SuspendLayout();
+            panelForInitialMultiplicity.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -54,12 +58,13 @@
             label1.Name = "label1";
             label1.Size = new Size(62, 15);
             label1.TabIndex = 0;
-            label1.Text = "First Class:";
+            label1.Text = "First ClassInBox:";
             // 
             // textBoxInitialClass
             // 
             textBoxInitialClass.Location = new Point(80, 6);
             textBoxInitialClass.Name = "textBoxInitialClass";
+            textBoxInitialClass.ReadOnly = true;
             textBoxInitialClass.Size = new Size(209, 23);
             textBoxInitialClass.TabIndex = 1;
             // 
@@ -70,7 +75,7 @@
             label2.Name = "label2";
             label2.Size = new Size(70, 15);
             label2.TabIndex = 2;
-            label2.Text = "Other Class:";
+            label2.Text = "Other ClassInBox:";
             // 
             // comboBoxOtherClass
             // 
@@ -96,6 +101,7 @@
             comboBoxRelationType.Name = "comboBoxRelationType";
             comboBoxRelationType.Size = new Size(209, 23);
             comboBoxRelationType.TabIndex = 5;
+            comboBoxRelationType.SelectedIndexChanged += comboBoxRelationType_SelectedIndexChanged;
             // 
             // label4
             // 
@@ -108,41 +114,10 @@
             // 
             // textBoxPropertyName
             // 
-            textBoxPropertyName.Location = new Point(106, 166);
+            textBoxPropertyName.Location = new Point(106, 163);
             textBoxPropertyName.Name = "textBoxPropertyName";
             textBoxPropertyName.Size = new Size(209, 23);
             textBoxPropertyName.TabIndex = 7;
-            // 
-            // radioButton1InitialClass
-            // 
-            radioButton1InitialClass.AutoSize = true;
-            radioButton1InitialClass.Location = new Point(12, 227);
-            radioButton1InitialClass.Name = "radioButton1InitialClass";
-            radioButton1InitialClass.Size = new Size(31, 19);
-            radioButton1InitialClass.TabIndex = 8;
-            radioButton1InitialClass.TabStop = true;
-            radioButton1InitialClass.Text = "1";
-            radioButton1InitialClass.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonInitialClass
-            // 
-            radioButtonInitialClass.AutoSize = true;
-            radioButtonInitialClass.Location = new Point(70, 227);
-            radioButtonInitialClass.Name = "radioButtonInitialClass";
-            radioButtonInitialClass.Size = new Size(30, 19);
-            radioButtonInitialClass.TabIndex = 9;
-            radioButtonInitialClass.TabStop = true;
-            radioButtonInitialClass.Text = "*";
-            radioButtonInitialClass.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(12, 209);
-            label5.Name = "label5";
-            label5.Size = new Size(70, 15);
-            label5.TabIndex = 10;
-            label5.Text = "Multiplicity:";
             // 
             // button3
             // 
@@ -159,7 +134,7 @@
             panelForSecondMultiplicity.Controls.Add(radioButtonNOtherClass);
             panelForSecondMultiplicity.Controls.Add(radioButton1OtherClass);
             panelForSecondMultiplicity.Controls.Add(label6);
-            panelForSecondMultiplicity.Location = new Point(12, 262);
+            panelForSecondMultiplicity.Location = new Point(12, 302);
             panelForSecondMultiplicity.Name = "panelForSecondMultiplicity";
             panelForSecondMultiplicity.Size = new Size(200, 100);
             panelForSecondMultiplicity.TabIndex = 14;
@@ -195,16 +170,74 @@
             label6.TabIndex = 15;
             label6.Text = "Multiplicity:";
             // 
+            // panelForInitialMultiplicity
+            // 
+            panelForInitialMultiplicity.Controls.Add(label5);
+            panelForInitialMultiplicity.Controls.Add(radioButtonInitialClass);
+            panelForInitialMultiplicity.Controls.Add(radioButton1InitialClass);
+            panelForInitialMultiplicity.Location = new Point(12, 251);
+            panelForInitialMultiplicity.Name = "panelForInitialMultiplicity";
+            panelForInitialMultiplicity.Size = new Size(195, 45);
+            panelForInitialMultiplicity.TabIndex = 15;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(70, 15);
+            label5.TabIndex = 13;
+            label5.Text = "Multiplicity:";
+            // 
+            // radioButtonInitialClass
+            // 
+            radioButtonInitialClass.AutoSize = true;
+            radioButtonInitialClass.Location = new Point(63, 18);
+            radioButtonInitialClass.Name = "radioButtonInitialClass";
+            radioButtonInitialClass.Size = new Size(30, 19);
+            radioButtonInitialClass.TabIndex = 12;
+            radioButtonInitialClass.TabStop = true;
+            radioButtonInitialClass.Text = "*";
+            radioButtonInitialClass.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1InitialClass
+            // 
+            radioButton1InitialClass.AutoSize = true;
+            radioButton1InitialClass.Location = new Point(5, 18);
+            radioButton1InitialClass.Name = "radioButton1InitialClass";
+            radioButton1InitialClass.Size = new Size(31, 19);
+            radioButton1InitialClass.TabIndex = 11;
+            radioButton1InitialClass.TabStop = true;
+            radioButton1InitialClass.Text = "1";
+            radioButton1InitialClass.UseVisualStyleBackColor = true;
+            // 
+            // textBoxPropertyForSecondClass
+            // 
+            textBoxPropertyForSecondClass.Location = new Point(188, 204);
+            textBoxPropertyForSecondClass.Name = "textBoxPropertyForSecondClass";
+            textBoxPropertyForSecondClass.Size = new Size(127, 23);
+            textBoxPropertyForSecondClass.TabIndex = 17;
+            textBoxPropertyForSecondClass.TextChanged += textBox1_TextChanged;
+            // 
+            // labelPropertyForSecondClass
+            // 
+            labelPropertyForSecondClass.AutoSize = true;
+            labelPropertyForSecondClass.Location = new Point(12, 207);
+            labelPropertyForSecondClass.Name = "labelPropertyForSecondClass";
+            labelPropertyForSecondClass.Size = new Size(177, 15);
+            labelPropertyForSecondClass.TabIndex = 16;
+            labelPropertyForSecondClass.Text = "Property name for second ClassInBox:";
+            // 
             // AddRelationForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(338, 450);
+            Controls.Add(textBoxPropertyForSecondClass);
+            Controls.Add(labelPropertyForSecondClass);
+            Controls.Add(panelForInitialMultiplicity);
             Controls.Add(panelForSecondMultiplicity);
             Controls.Add(button3);
-            Controls.Add(label5);
-            Controls.Add(radioButtonInitialClass);
-            Controls.Add(radioButton1InitialClass);
             Controls.Add(textBoxPropertyName);
             Controls.Add(label4);
             Controls.Add(comboBoxRelationType);
@@ -220,6 +253,8 @@
             Text = "AddRelationForm";
             panelForSecondMultiplicity.ResumeLayout(false);
             panelForSecondMultiplicity.PerformLayout();
+            panelForInitialMultiplicity.ResumeLayout(false);
+            panelForInitialMultiplicity.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -234,13 +269,16 @@
         private ComboBox comboBoxRelationType;
         private Label label4;
         private TextBox textBoxPropertyName;
-        private RadioButton radioButton1InitialClass;
-        private RadioButton radioButtonInitialClass;
-        private Label label5;
         private Button button3;
         private Panel panelForSecondMultiplicity;
         private RadioButton radioButtonNOtherClass;
         private RadioButton radioButton1OtherClass;
         private Label label6;
+        private Panel panelForInitialMultiplicity;
+        private Label label5;
+        private RadioButton radioButtonInitialClass;
+        private RadioButton radioButton1InitialClass;
+        private TextBox textBoxPropertyForSecondClass;
+        private Label labelPropertyForSecondClass;
     }
 }

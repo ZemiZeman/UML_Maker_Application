@@ -1,34 +1,53 @@
-﻿using UML_Maker_App;
+﻿using System.Text.Json.Serialization;
+using UML_Maker_App;
 
 namespace DragAndDrop
 {
     public class Box
     {
         public int PositionX { get; private set; }
-        public int PositionY { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+		public int PositionY { get; private set; }
+		public int Width { get; private set; }
+		public int Height { get; private set; }
+		public Class? ClassInBox { get; set; }
 
-        public Class? Class { get; set; }
 
-        public int MinWidth => 80;
-        public int MinHeight => 40;
-        public int MaxWidth => 320;
-        public int MaxHeight => 320;
+		[JsonIgnore]
+		public int MinWidth => 80;
+		[JsonIgnore]
+		public int MinHeight => 40;
+		[JsonIgnore]
+		public int MaxWidth => 320;
+		[JsonIgnore]
+		public int MaxHeight => 320;
 
-        public Brush _color;
-        private string _text;
+		[JsonIgnore]
+		public Brush _color;
+		[JsonIgnore]
+		private string _text;
 
-        public Box(int x, int y,Class @class = null)
+        public Box(int x, int y, Class classInBox = null)
         {
             PositionX = x;
             PositionY = y;
-            Class = @class;
+            ClassInBox = classInBox;
 
             Width = 80;
             Height = 80;
             _color = Brushes.Red;
             _text = "Box";
+        }
+
+        public Box()
+        {
+            PositionX = 0;
+            PositionY = 0;
+            ClassInBox = null;
+
+            Width = 80;
+            Height = 80;
+            _color = Brushes.Red;
+            _text = "";
         }
 
         public void Select()
@@ -75,7 +94,7 @@ namespace DragAndDrop
 
         public void Draw(Graphics g)
         {
-            if (Class == null)
+            if (ClassInBox == null)
             {
                 g.TranslateTransform(PositionX, PositionY);
                 g.FillRectangle(_color, 0, 0, Width, Height);
@@ -85,9 +104,9 @@ namespace DragAndDrop
             }
             else
             {
-                Width = (int)Class.GetMinimalWidth(g);
-                Height = (int)Class.GetMinimalHeight();
-                Class.DrawUML(g, PositionX, PositionY,Width,Height);
+                Width = (int)ClassInBox.GetMinimalWidth(g);
+                Height = (int)ClassInBox.GetMinimalHeight();
+                ClassInBox.DrawUML(g, PositionX, PositionY,Width,Height);
             }
         }
 
