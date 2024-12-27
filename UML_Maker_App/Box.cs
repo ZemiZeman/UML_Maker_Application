@@ -94,20 +94,9 @@ namespace DragAndDrop
 
         public void Draw(Graphics g)
         {
-            if (ClassInBox == null)
-            {
-                g.TranslateTransform(PositionX, PositionY);
-                g.FillRectangle(_color, 0, 0, Width, Height);
-                g.FillRectangle(Brushes.Black, Width - 10, Height - 10, 10, 10);
-                g.DrawString(_text, new Font("Arial", 10), Brushes.Black, 10, 10);
-                g.ResetTransform();
-            }
-            else
-            {
-                Width = (int)ClassInBox.GetMinimalWidth(g);
-                Height = (int)ClassInBox.GetMinimalHeight();
-                ClassInBox.DrawUML(g, PositionX, PositionY,Width,Height);
-            }
+            Width = (int)ClassInBox.GetMinimalWidth(g);
+            Height = (int)ClassInBox.GetMinimalHeight();
+            ClassInBox.DrawUML(g, PositionX, PositionY,Width,Height);
         }
 
         public bool IsInCollision(int x, int y)

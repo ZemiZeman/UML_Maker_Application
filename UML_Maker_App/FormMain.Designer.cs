@@ -548,7 +548,7 @@
 			// 
 			// saveFileDialog
 			// 
-			saveFileDialog.Filter = "|*.png||*.json||*.txt";
+			saveFileDialog.Filter = "|*.json";
 			// 
 			// openFileDialog
 			// 

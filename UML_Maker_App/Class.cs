@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Windows.Forms.VisualStyles;
 
 namespace UML_Maker_App
 {
@@ -60,9 +61,14 @@ namespace UML_Maker_App
 
         public float GetMinimalWidth(Graphics g)
         {
-            Font fontForProperties = new Font("Arial", 10);
+            
 
-            SizeF size = g.MeasureString(GetLongestText(), fontForProperties);
+            string longestText = GetLongestText();
+            int fontSize = longestText == this.Identificator ? 16 : 10;
+
+			Font fontForProperties = new Font("Arial", fontSize);
+
+			SizeF size = g.MeasureString(longestText, fontForProperties);
 
             return float.Parse(size.Width.ToString()) + 5;
         }
@@ -89,6 +95,10 @@ namespace UML_Maker_App
         public void DrawUML(Graphics g,float posX,float posY,float width,float height)
         {
             Font font = new Font("Arial", 14);
+            StringFormat format = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+            };
             Brush brush = Brushes.Black;
             Pen pen = Pens.CadetBlue;
             Brush brushAlice = Brushes.CadetBlue;
@@ -99,7 +109,7 @@ namespace UML_Maker_App
 
             g.DrawRectangle(pen, posX, posY, width, height);
             g.FillRectangle(brushAlice, posX, posY, width, 29); //výška fontu(teď 14) + 30/2
-            g.DrawString($"{Identificator}", font, brush, posX, posY);
+            g.DrawString($"{Identificator}", font, brush, posX + width/2, posY,format);
 
             posY += 30;
 

@@ -20,42 +20,35 @@ namespace DragAndDrop
             _selection = null;
             _relations = new List<Relation>();
 
-            //for(int i = 0; i < 5; i++)
-            //{
-            //    Box box = new Box(10, (i * 100) + 10,(i+1).ToString());
-            //    _boxes.Add(box);
-            //}
 
-            ClassProperty property1 = new ClassProperty(AccessModifer.Public, "int", "studentNumber");
-            ClassProperty property2 = new ClassProperty(AccessModifer.Public, "int", "averageMark");
+            //ClassProperty property1 = new ClassProperty(AccessModifer.Public, "int", "studentNumber");
+            //ClassProperty property2 = new ClassProperty(AccessModifer.Public, "int", "averageMark");
 
-            ClassMethod method = new ClassMethod(AccessModifer.Public, "bool", "isEligibleToEnroll", new List<string> { "string" });
-            ClassMethod method2 = new ClassMethod(AccessModifer.Public, "int", "getSeminarsTaken", new List<string> ());
+            //ClassMethod method = new ClassMethod(AccessModifer.Public, "bool", "isEligibleToEnroll", new List<string> { "string" });
+            //ClassMethod method2 = new ClassMethod(AccessModifer.Public, "int", "getSeminarsTaken", new List<string> ());
 
-            Class @class = new Class(new List<ClassProperty> { property1, property2 }, new List<ClassMethod> { method, method2 }, "Student");
+            //Class @class = new Class(new List<ClassProperty> { property1, property2 }, new List<ClassMethod> { method, method2 }, "Student");
 
-            _boxes.Add(new Box(10, 10, @class));
+            //_boxes.Add(new Box(10, 10, @class));
 
-            ClassProperty property3 = new ClassProperty(AccessModifer.Public, "int", "countOfTeacher");
-            ClassProperty property4 = new ClassProperty(AccessModifer.Private, "int", "budget");
+            //ClassProperty property3 = new ClassProperty(AccessModifer.Public, "int", "countOfTeacher");
+            //ClassProperty property4 = new ClassProperty(AccessModifer.Private, "int", "budget");
 
-            ClassMethod method3 = new ClassMethod(AccessModifer.Public, "bool", "isOpen", new List<string> { "" });
-            ClassMethod method4 = new ClassMethod(AccessModifer.Public, "void", "FireTeacher", new List<string>());
+            //ClassMethod method3 = new ClassMethod(AccessModifer.Public, "bool", "isOpen", new List<string> { "" });
+            //ClassMethod method4 = new ClassMethod(AccessModifer.Public, "void", "FireTeacher", new List<string>());
 
-            Class @class2 = new Class(new List<ClassProperty> { property3, property4 }, new List<ClassMethod>{ method3, method4}, "School");
+            //Class @class2 = new Class(new List<ClassProperty> { property3, property4 }, new List<ClassMethod>{ method3, method4}, "School");
 
-            _boxes.Add(new Box(250, 10,@class2));
+            //_boxes.Add(new Box(250, 10,@class2));
 
-            ClassProperty propert5 = new ClassProperty(AccessModifer.Private, "bool", "IsAvaiable");
+            //ClassProperty propert5 = new ClassProperty(AccessModifer.Private, "bool", "IsAvaiable");
 
-            ClassMethod method5 = new ClassMethod(AccessModifer.Internal,"","teach",new List<string> {"str","int"});
+            //ClassMethod method5 = new ClassMethod(AccessModifer.Internal,"","teach",new List<string> {"str","int"});
 
-            Class @class3 = new Class(new List<ClassProperty> { propert5 }, new List<ClassMethod> { method5 }, "Teacher");
+            //Class @class3 = new Class(new List<ClassProperty> { propert5 }, new List<ClassMethod> { method5 }, "Teacher");
 
-            _boxes.Add(new Box(150, 250,@class3));
+            //_boxes.Add(new Box(150, 250,@class3));
 
-            //_relations.Add(new Relation("students", _boxes.SingleOrDefault(b => b.ClassInBox.Identificator == "School")!, _boxes.SingleOrDefault(b => b.ClassInBox.Identificator == "Student")!, MultiplicityType.One));
-            //_relations.Add(new Relation("teachers", _boxes.SingleOrDefault(b => b.ClassInBox.Identificator == "School")!, _boxes.SingleOrDefault(b => b.ClassInBox.Identificator == "Teacher")!, MultiplicityType.N));
         }
 
         public void Draw(Graphics g)
@@ -125,6 +118,20 @@ namespace DragAndDrop
         public void DeleteBox(Box box)
         {
             _boxes.Remove(box);
+            List<Relation> relationsToDelete = new List<Relation>();
+            foreach (Relation relation in _relations)
+            {
+                if(relation.FirstClass == box)
+                    relationsToDelete.Add(relation);
+
+                if(relation.SecondClass == box)
+					relationsToDelete.Add(relation);
+			}
+
+            foreach (Relation relation in relationsToDelete)
+            {
+                _relations.Remove(relation);
+            }
         }
 
         public Box AddBox(Class @class)

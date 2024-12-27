@@ -398,6 +398,7 @@ namespace DragAndDrop
 
         private void buttonSavePNG_Click(object sender, EventArgs e)
         {
+            saveFileDialog.Filter = "|*.png";
             DialogResult result = saveFileDialog.ShowDialog();
 
 
@@ -429,6 +430,7 @@ namespace DragAndDrop
 
         private void buttonSaveJSON_Click(object sender, EventArgs e)
         {
+            saveFileDialog.Filter = "|*.json";
             DialogResult result = saveFileDialog.ShowDialog();
 
 
@@ -470,6 +472,8 @@ namespace DragAndDrop
 
         private void buttonGenerateCode_Click(object sender, EventArgs e)
         {
+
+            saveFileDialog.Filter = "|*.txt";
             DialogResult result = saveFileDialog.ShowDialog();
 
 
