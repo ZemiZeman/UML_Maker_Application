@@ -228,10 +228,11 @@ namespace UML_Maker_App
             //float rightUpperCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX+FirstClass.Width,FirstClass.PositionY), angle);
             //float leftLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX,FirstClass.PositionY+FirstClass.Height), angle);
             //float rightLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX + FirstClass.Width,FirstClass.PositionY + FirstClass.Height),angle);
-            float rightLowerCornerAngle = GetCornerAngle(new PointF(FirstClass.PositionX + FirstClass.Width, FirstClass.PositionY + FirstClass.Height), angle);
-            float leftUpperCornerAngle = (180 - rightLowerCornerAngle) * -1;
-            float rightUpperCornerAngle = rightLowerCornerAngle * -1;
-            float leftLowerCornerAngle = leftUpperCornerAngle * -1;
+
+            float rightLowerCornerAngle = 35;
+            float leftUpperCornerAngle = -145;
+            float rightUpperCornerAngle = -35;
+            float leftLowerCornerAngle = 145;
 
             //if ((angle > -40 && angle <= 0) || (angle >= 0 && angle < 40))
             //    option = 1;
@@ -242,6 +243,7 @@ namespace UML_Maker_App
             //else if (angle >= -139 && angle <= -40)
             //    option = 4;
 
+
             if ((angle > rightUpperCornerAngle && angle <= 0) || (angle >= 0 && angle < rightLowerCornerAngle))
                 option = 1;
             else if (angle >= rightLowerCornerAngle && angle <= leftLowerCornerAngle)
@@ -251,7 +253,6 @@ namespace UML_Maker_App
             else if (angle >= leftUpperCornerAngle && angle <= rightUpperCornerAngle)
                 option = 4;
 
-            g.DrawString(angle.ToString(), new Font("Arial", 16), Brushes.Black, 50, 50);
 
             return option;
         }

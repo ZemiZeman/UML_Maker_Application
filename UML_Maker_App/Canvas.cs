@@ -20,35 +20,6 @@ namespace DragAndDrop
             _selection = null;
             _relations = new List<Relation>();
 
-
-            //ClassProperty property1 = new ClassProperty(AccessModifer.Public, "int", "studentNumber");
-            //ClassProperty property2 = new ClassProperty(AccessModifer.Public, "int", "averageMark");
-
-            //ClassMethod method = new ClassMethod(AccessModifer.Public, "bool", "isEligibleToEnroll", new List<string> { "string" });
-            //ClassMethod method2 = new ClassMethod(AccessModifer.Public, "int", "getSeminarsTaken", new List<string> ());
-
-            //Class @class = new Class(new List<ClassProperty> { property1, property2 }, new List<ClassMethod> { method, method2 }, "Student");
-
-            //_boxes.Add(new Box(10, 10, @class));
-
-            //ClassProperty property3 = new ClassProperty(AccessModifer.Public, "int", "countOfTeacher");
-            //ClassProperty property4 = new ClassProperty(AccessModifer.Private, "int", "budget");
-
-            //ClassMethod method3 = new ClassMethod(AccessModifer.Public, "bool", "isOpen", new List<string> { "" });
-            //ClassMethod method4 = new ClassMethod(AccessModifer.Public, "void", "FireTeacher", new List<string>());
-
-            //Class @class2 = new Class(new List<ClassProperty> { property3, property4 }, new List<ClassMethod>{ method3, method4}, "School");
-
-            //_boxes.Add(new Box(250, 10,@class2));
-
-            //ClassProperty propert5 = new ClassProperty(AccessModifer.Private, "bool", "IsAvaiable");
-
-            //ClassMethod method5 = new ClassMethod(AccessModifer.Internal,"","teach",new List<string> {"str","int"});
-
-            //Class @class3 = new Class(new List<ClassProperty> { propert5 }, new List<ClassMethod> { method5 }, "Teacher");
-
-            //_boxes.Add(new Box(150, 250,@class3));
-
         }
 
         public void Draw(Graphics g)
@@ -68,7 +39,6 @@ namespace DragAndDrop
                 Box box = _boxes[i];
                 if (box.IsInCollisionWithCorner(x, y))
                 {
-                    //MessageBox.Show("Corner selected!");
 
                     _selection = new ResizeSelection(box, x, y);
                     _selection.Select();

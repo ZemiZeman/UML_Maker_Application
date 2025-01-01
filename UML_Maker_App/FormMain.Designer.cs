@@ -68,6 +68,7 @@
 			buttonGenerateCode = new Button();
 			saveFileDialog = new SaveFileDialog();
 			openFileDialog = new OpenFileDialog();
+			buttonClear = new Button();
 			((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
 			panelEditClass.SuspendLayout();
 			tableLayoutPanelClassEdit.SuspendLayout();
@@ -463,8 +464,9 @@
 			// 
 			// tableLayoutPanelServiceButtons
 			// 
-			tableLayoutPanelServiceButtons.ColumnCount = 7;
+			tableLayoutPanelServiceButtons.ColumnCount = 8;
 			tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+			tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 114F));
 			tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 114F));
 			tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 114F));
 			tableLayoutPanelServiceButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 114F));
@@ -476,6 +478,7 @@
 			tableLayoutPanelServiceButtons.Controls.Add(buttonLoadJSON, 2, 0);
 			tableLayoutPanelServiceButtons.Controls.Add(buttonSaveJSON, 3, 0);
 			tableLayoutPanelServiceButtons.Controls.Add(buttonGenerateCode, 4, 0);
+			tableLayoutPanelServiceButtons.Controls.Add(buttonClear, 6, 0);
 			tableLayoutPanelServiceButtons.Dock = DockStyle.Fill;
 			tableLayoutPanelServiceButtons.Location = new Point(3, 4);
 			tableLayoutPanelServiceButtons.Margin = new Padding(3, 4, 3, 4);
@@ -489,7 +492,7 @@
 			// buttonAddClass
 			// 
 			buttonAddClass.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-			buttonAddClass.Location = new Point(370, 7);
+			buttonAddClass.Location = new Point(313, 7);
 			buttonAddClass.Margin = new Padding(3, 4, 3, 4);
 			buttonAddClass.Name = "buttonAddClass";
 			buttonAddClass.Size = new Size(108, 31);
@@ -501,7 +504,7 @@
 			// buttonSavePNG
 			// 
 			buttonSavePNG.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-			buttonSavePNG.Location = new Point(826, 7);
+			buttonSavePNG.Location = new Point(769, 7);
 			buttonSavePNG.Margin = new Padding(3, 4, 3, 4);
 			buttonSavePNG.Name = "buttonSavePNG";
 			buttonSavePNG.Size = new Size(108, 31);
@@ -513,7 +516,7 @@
 			// buttonLoadJSON
 			// 
 			buttonLoadJSON.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-			buttonLoadJSON.Location = new Point(484, 7);
+			buttonLoadJSON.Location = new Point(427, 7);
 			buttonLoadJSON.Margin = new Padding(3, 4, 3, 4);
 			buttonLoadJSON.Name = "buttonLoadJSON";
 			buttonLoadJSON.Size = new Size(108, 31);
@@ -525,7 +528,7 @@
 			// buttonSaveJSON
 			// 
 			buttonSaveJSON.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-			buttonSaveJSON.Location = new Point(598, 7);
+			buttonSaveJSON.Location = new Point(541, 7);
 			buttonSaveJSON.Margin = new Padding(3, 4, 3, 4);
 			buttonSaveJSON.Name = "buttonSaveJSON";
 			buttonSaveJSON.Size = new Size(108, 31);
@@ -537,7 +540,7 @@
 			// buttonGenerateCode
 			// 
 			buttonGenerateCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-			buttonGenerateCode.Location = new Point(712, 7);
+			buttonGenerateCode.Location = new Point(655, 7);
 			buttonGenerateCode.Margin = new Padding(3, 4, 3, 4);
 			buttonGenerateCode.Name = "buttonGenerateCode";
 			buttonGenerateCode.Size = new Size(108, 31);
@@ -554,6 +557,17 @@
 			// 
 			openFileDialog.FileName = "openFileDialog1";
 			openFileDialog.Filter = "|*.json";
+			// 
+			// buttonClear
+			// 
+			buttonClear.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+			buttonClear.Location = new Point(883, 8);
+			buttonClear.Name = "buttonClear";
+			buttonClear.Size = new Size(108, 29);
+			buttonClear.TabIndex = 5;
+			buttonClear.Text = "Clear";
+			buttonClear.UseVisualStyleBackColor = true;
+			buttonClear.Click += buttonClear_Click;
 			// 
 			// FormMain
 			// 
@@ -632,5 +646,6 @@
         private Button buttonSaveJSON;
         private Button buttonGenerateCode;
         private OpenFileDialog openFileDialog;
-    }
+		private Button buttonClear;
+	}
 }
